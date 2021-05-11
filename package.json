@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/fraudwheeldrive/just-tech-news/issues"
   },
-  "homepage": "https://github.com/fraudwheeldrive/just-tech-news#readme"
+  "homepage": "https://github.com/fraudwheeldrive/just-tech-news#readme",
+  "dependencies": {
+    "node": "^16.1.0"
+  }
 }
