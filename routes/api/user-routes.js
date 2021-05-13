@@ -47,11 +47,38 @@ router.post('/', (req, res) => {
     });
 });
 
+//log in 
+router.post('/login', (req, res) => {
+  //expects {email: , password}
+  User.findOne({
+    where: {
+      email: req.body.email
+    }
+  }). then(dbUserData => {
+    if(!dbUserData) {
+      res.status(400).json({ message: 'no user with that email address! '});
+      return;
+    }
+  
+  res,json({ user: dbUserData });
+  
+  // verify user 
+  const validPassword = dbUserData.checkPassword(req.body.password);
+  if(!validPassword) {
+    res.status(400).json({ message: 'Incorrect password!' });
+    return;
+  }
+
+  res.json({ user: dbUserData, message: 'you are now logged in ! '});
+  });
+});
+
 router.put('/:id', (req, res) => {
   // expects {username: 'Lernantino', email: 'lernantino@gmail.com', password: 'password1234'}
 
   // pass in req.body instead to only update what's passed through
   User.update(req.body, {
+    individualHooks: true,
     where: {
       id: req.params.id
     }
@@ -61,7 +88,7 @@ router.put('/:id', (req, res) => {
         res.status(404).json({ message: 'No user found with this id' });
         return;
       }
-      res.json(dbUserData);
+      // res.json(dbUserData);
     })
     .catch(err => {
       console.log(err);
